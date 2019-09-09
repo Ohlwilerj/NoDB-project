@@ -17,9 +17,8 @@ module.exports = {
     },
 
     add: (req,res) => {
-        const playerObj = {
-            ...req.body, id:id++
-        }
+        const playerObj = 
+        {...req.body, id:id++}
         team.push(playerObj)
         res.status(200).send(team)
     },
@@ -33,9 +32,23 @@ module.exports = {
 
     statChange: (req, res) => {
         const {id} = req.params
-        const {nemHrs} = req.body.hrs
-        const {newBa} = req.body.batting
-        const {war} = req.body.war
+        const {newHrs} = req.body
+        const {newBa} = req.body
+        const {newWar} = req.body
+        const index = team.findIndex(el => el.id === +id)
+        const updatedPlayer = {
+            ...team[index],
+            "hrs": newHrs,
+            "batting_average": newBa,
+            "war": newWar
+        }
+        team.splice(index,1,{
+            ...team[index],
+            "hrs": newHrs,
+            "batting_average": newBa,
+            "war": newWar
+        })
+        res.status(200).send(team)
 
     }
 }
